@@ -22,9 +22,10 @@ const ActivityCard: React.FC<Props> = ({ activity, onLike, onDislike, onClick })
     }));
 
     // Swipe
+    // @ts-ignore
     const bind = useGesture(
         {
-            onDrag: ({ down, movement: [mx], direction: [dx], velocity }) => {
+            onDrag: ({ down, movement: [mx], direction: [dx],  }) => {
                 const trigger = Math.abs(mx) > THRESHOLD;
                 const dir = dx < 0 ? -1 : 1; // linke/ rechte Richtung
 

@@ -1,26 +1,33 @@
 {
   "name": "aktivitatenswiper-",
+  "homepage": "https://aktivitatenswiper.github.io/AktivitatenSwiper/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "@react-spring/web": "^10.0.3",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@use-gesture/react": "^10.3.1",
     "bootstrap": "^5.3.8",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.1",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.9.1",
     "react-swipeable": "^7.0.2",
     "typescript": "^5.9.2",
     "vite": "^7.1.6",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^7.9.1",
-    "@react-spring/web": "^10.0.3",
-    "@use-gesture/react": "^10.3.1"
+    "@vitejs/plugin-react": "^5.0.3"
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
