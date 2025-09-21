@@ -58,53 +58,51 @@ const ActivityCard: React.FC<Props> = ({ activity, onLike, onDislike, onClick })
     };
 
     return (
-        <div className="d-flex justify-content-center">
-            <a.div
-                {...bind()}
-                onWheel={handleWheel}
-                style={{
-                    x,
-                    y,
-                    rotate: rot,
-                    scale,
-                    touchAction: 'pan-y',
-                    maxWidth: '350px',
-                    width: '100%',
-                }}
-                className="card"
-                role="button"
-                aria-pressed="false"
-            >
-                {activity.image && (
-                    <img src={activity.image} className="card-img-top" alt={activity.name} />
-                )}
-                <div className="card-body">
-                    <h5 className="card-title">{activity.name}</h5>
-                    <p className="card-text">
-                        {activity.tags.map((t) => (
-                            <span key={t} className="badge bg-secondary me-1">
-                {t}
-              </span>
-                        ))}
-                    </p>
-                    <p className="card-text">{activity.price}</p>
-                </div>
+        <a.div
+            {...bind()}
+            onWheel={handleWheel}
+            style={{
+                x,
+                y,
+                rotate: rot,
+                scale,
+                touchAction: 'pan-y',
+                maxWidth: '100%',
+                width: '100%',
+            }}
+            className="card h-100"
+            role="button"
+            aria-pressed="false"
+        >
+            {activity.image && (
+                <img src={activity.image} className="card-img-top object-fit-cover h-100" alt={activity.name}   />
+            )}
+            <div className="card-body">
+                <h5 className="card-title">{activity.name}</h5>
+                <p className="card-text">
+                    {activity.tags.map((t) => (
+                        <span key={t} className="badge bg-secondary me-1">
+            {t}
+          </span>
+                    ))}
+                </p>
+                <p className="card-text">{activity.price}</p>
+            </div>
 
-                <a
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onClick();
-                    }}
-                    role="button"
-                    aria-label="Mehr Infos anzeigen"
-                    style={{
-                        position: 'absolute',
-                        inset: 0,
-                        cursor: 'pointer',
-                    }}
-                />
-            </a.div>
-        </div>
+            <a
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onClick();
+                }}
+                role="button"
+                aria-label="Mehr Infos anzeigen"
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    cursor: 'pointer',
+                }}
+            />
+        </a.div>
     );
 };
 

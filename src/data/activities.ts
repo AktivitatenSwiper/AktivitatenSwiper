@@ -9,7 +9,7 @@ export const activities: Activity[] = [
         description:
             'Erkunde die historische Altstadt mit spannenden Aufgaben und coolen Preisen. Ideal für Gruppen!',
         image:
-            'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=60',
+            'https://archaeo-now.com/wp-content/uploads/2024/06/MG_4668-scaled.jpg'
     },
     {
         id: 2,
@@ -29,6 +29,6 @@ export const activities: Activity[] = [
         description:
             'Entdecke die besten Biergärten Münchens, kühle dich an einem heißen Sommertag ab und genieße lokale Spezialitäten.',
         image:
-            'https://images.unsplash.com/photo-1558609878-f6e2f5a7b9c4?auto=format&fit=crop&w=800&q=60',
+            'https://www.pissup.de/img/asset/YWN0aXZpdHlfYXNzZXRzL2FjdGl2aXRpZXMvdW5jYXRlZ29yaXplZC9iaWVyZ2FydGVuLW11bmNoZW4uanBn/biergarten-munchen.jpg?w=1920&s=27f4b6f60a3807e2781e9a8e70fd7882',
     },
 ];

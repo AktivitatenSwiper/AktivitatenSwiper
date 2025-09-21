@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import type {Activity} from "./types/activity.ts";
 import { activities } from './data/activities';
 import ActivityCard from './module/ActivityCard';
@@ -12,7 +12,7 @@ const App: React.FC = () => {
     const [view, setView] = useState<'swiper' | 'detail'>('swiper');
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
-    // --- Tastatur‑Pfeiltasten
+    // Tastatur‑Pfeiltasten
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
             if (view !== 'swiper') return;          // Nur im Swiper-Modus
@@ -38,7 +38,7 @@ const App: React.FC = () => {
 
     const nextCard = () => {
         if (index + 1 < activities.length) setIndex(index + 1);
-        else alert('Alle Karten wurden durchgeswiped!'); // Ende‑Message
+        else alert('Alle Karten wurden durchgeswiped!');
     };
 
     const openDetail = () => {
@@ -51,21 +51,44 @@ const App: React.FC = () => {
         setSelectedActivity(null);
     };
 
-    return (
-        <div className="container py-4">
-            {view === 'swiper' && current && (
-                <ActivityCard
-                    activity={current}
-                    onLike={handleLike}
-                    onDislike={handleDislike}
-                    onClick={openDetail}
-                />
-            )}
+    const CardRef = useRef<HTMLDivElement>(null);
+    const [CardHeight, setCardHeight] = useState(0);
 
-            {view === 'detail' && selectedActivity && (
-                <DetailView activity={selectedActivity} onBack={backToSwiper} />
-            )}
-            <SwipeControls onLike={handleLike} onDislike={handleDislike} />
+    useEffect(() => {
+        if (CardRef.current) {
+            const rect = CardRef.current.getBoundingClientRect();
+            setCardHeight(rect.height); // px anhängen, wenn du es als CSS-Wert benutzen willst
+            //console.log( rect.height);
+        }
+    }, [selectedActivity]);
+
+
+    return (
+        <div className="d-flex justify-content-center align-items-center min-vh-100" >
+            <div  ref={CardRef} style={{ aspectRatio: "9 / 16", maxHeight: "100vh",  width: "auto"}} >
+                { current && (
+
+                    <ActivityCard
+                        activity={current}
+                        onLike={handleLike}
+                        onDislike={handleDislike}
+                        onClick={openDetail}
+
+                    />
+                )}
+                {view === 'detail' && selectedActivity && (
+
+                    <div style={{
+                        position: "relative",
+                        top: "-" +CardHeight +"px"
+
+                    }}>
+                        <DetailView height={CardHeight} activity={selectedActivity} onBack={backToSwiper}  />
+                    </div>
+                )}
+            </div>
+            <SwipeControls onLike={handleLike} onDislike={handleDislike}  />
+
 
         </div>
     );
