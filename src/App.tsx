@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import type {Activity} from "./types/activity.ts";
 import { activities } from './data/activities';
 import ActivityCard from './module/ActivityCard';
@@ -51,41 +51,36 @@ const App: React.FC = () => {
         setSelectedActivity(null);
     };
 
-    const CardRef = useRef<HTMLDivElement>(null);
-    const [CardHeight, setCardHeight] = useState(0);
-
-    useEffect(() => {
-        if (CardRef.current) {
-            const rect = CardRef.current.getBoundingClientRect();
-            setCardHeight(rect.height); // px anhängen, wenn du es als CSS-Wert benutzen willst
-            //console.log( rect.height);
-        }
-    }, [selectedActivity]);
-
-
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100" >
-            <div  ref={CardRef} style={{ aspectRatio: "9 / 16", maxHeight: "100vh",  width: "auto"}} >
-                { current && (
+            <div style={{ aspectRatio: "9 / 16", maxHeight: "100vh",  width: "auto"}} >
+                <div style={{
+                    display:"grid",
+                    gridTemplateColumns: "repeat(9, 1fr)",
+                    gridTemplateRows:"repeat(16, 1fr)",
+                    columnGap:"0px",
+                    rowGap:"0px",
+                    width:"100%",
+                    height:"95%"}}>
+                    { current && (
+                        <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"1000"}}>
+                            <ActivityCard
+                                activity={current}
+                                onLike={handleLike}
+                                onDislike={handleDislike}
+                                onClick={openDetail}
 
-                    <ActivityCard
-                        activity={current}
-                        onLike={handleLike}
-                        onDislike={handleDislike}
-                        onClick={openDetail}
+                            />
+                        </div>
 
-                    />
-                )}
-                {view === 'detail' && selectedActivity && (
 
-                    <div style={{
-                        position: "relative",
-                        top: "-" +CardHeight +"px"
-
-                    }}>
-                        <DetailView height={CardHeight} activity={selectedActivity} onBack={backToSwiper}  />
-                    </div>
-                )}
+                    )}
+                    {view === 'detail' && selectedActivity && (
+                        <div style={{gridArea: " 1 / 1 / 17 / 10",zIndex:"1001" }}>
+                            <DetailView activity={selectedActivity} onBack={backToSwiper}  />
+                        </div>
+                    )}
+                </div>
             </div>
             <SwipeControls onLike={handleLike} onDislike={handleDislike}  />
 

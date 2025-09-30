@@ -27,21 +27,23 @@ const ActivityCard: React.FC<Props> = ({ activity, onLike, onDislike, onClick })
         {
             onDrag: ({ down, movement: [mx], direction: [dx],  }) => {
                 const trigger = Math.abs(mx) > THRESHOLD;
-                const dir = dx < 0 ? -1 : 1; // linke/ rechte Richtung
+
 
                 if (!down && trigger) {
                     // Swipe abgeschlossen
+                    const dir = dx < 0 ? -1 : 1; // linke/ rechte Richtung
                     api.start({ x: dir * window.innerWidth, rot: dir * 20, scale: 1 });
-                    setTimeout(() => (dir === 1 ? onLike() : onDislike()), 300);
+                    setTimeout(() => (dir === 1 ? onLike() : onDislike()), 100);
                 } else {
                     api.start({
                         x: down ? mx : 0,
                         y: down ? 0 : 0,
                         rot: down ? mx / 20 : 0,
-                        scale: down ? 1.05 : 1,
+                        scale: down ? 0.95 : 1,
                         immediate: down,
                     });
                 }
+
             },
         },
         {
@@ -49,13 +51,13 @@ const ActivityCard: React.FC<Props> = ({ activity, onLike, onDislike, onClick })
         }
     );
 
-    // Touchpad
+    // Touchpad (zwei finger seidlich links rechts)
     const handleWheel = (e: React.WheelEvent) => {
         if (!e.shiftKey) return; // nur bei Shift+Scroll
         e.preventDefault();
         const dir = e.deltaX > 0 ? -1 : 1;
         api.start({ x: dir * window.innerWidth, rot: dir * 20, scale: 1 });
-        setTimeout(() => (dir === 1 ? onLike() : onDislike()), 300);
+        setTimeout(() => (dir === 1 ? onLike() : onDislike()), 100);
     };
 
     return (
