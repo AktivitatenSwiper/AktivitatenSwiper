@@ -15,6 +15,7 @@ const App: React.FC = () => {
     const [view, setView] = useState<'swiper' | 'detail'>('swiper');
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
     //als schnittstelle für click kommunikatio zwischen navbar und hier
+    // @ts-ignore
     const [clicked, setClicked] = useState<{ [key: string]: boolean }>({});
 
 
@@ -79,7 +80,8 @@ const App: React.FC = () => {
                     columnGap:"0px",
                     rowGap:"0px",
                     width:"100%",
-                    height:"100%"}}>
+                    height:"100%"
+                }}>
                     {
                         <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"0"}}>
                             <NextCard activity={next} />
@@ -87,7 +89,7 @@ const App: React.FC = () => {
                     }
 
                     {
-                        <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"1100"}}>
+                        <div style={{gridArea: " 1 / 1 / 1 / 10" ,zIndex:"1100"}}>
                             <Navbar onNavItemClick={handleNavItemClick} />
                         </div>
                     }
