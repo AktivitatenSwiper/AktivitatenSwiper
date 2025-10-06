@@ -4,13 +4,19 @@ import { activities } from './data/activities';
 import ActivityCard from './module/ActivityCard';
 import DetailView from './module/DetailView';
 import SwipeControls from "./module/SwipeControls.tsx";
+import NextCard from "./module/NextCard.tsx";
+import Navbar from "./module/Navbar.tsx"
 
 const App: React.FC = () => {
     const [index, setIndex] = useState(0);
     const [liked, setLiked] = useState<Activity[]>([]);
     const [disliked, setDisliked] = useState<Activity[]>([]);
+    const [bookmark, setBookmark] = useState<Activity[]>([]);
     const [view, setView] = useState<'swiper' | 'detail'>('swiper');
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+    //als schnittstelle für click kommunikatio zwischen navbar und hier
+    const [clicked, setClicked] = useState<{ [key: string]: boolean }>({});
+
 
     // Tastatur‑Pfeiltasten
     useEffect(() => {
@@ -25,6 +31,7 @@ const App: React.FC = () => {
     }, [view, index]);
 
     const current = activities[index];
+    const next    = activities[index + 1];
 
     const handleLike = () => {
         setLiked([...liked, current]);
@@ -36,8 +43,14 @@ const App: React.FC = () => {
         nextCard();
     };
 
+    const handleBookmark = () => {
+        setBookmark([...bookmark, current]);
+        //soll die nächte karte kommen wenn man bookmarkt?
+        //nextCard();
+    };
+
     const nextCard = () => {
-        if (index + 1 < activities.length) setIndex(index + 1);
+        if (index + 2 < activities.length) setIndex(index + 1);
         else alert('Alle Karten wurden durchgeswiped!');
     };
 
@@ -51,8 +64,13 @@ const App: React.FC = () => {
         setSelectedActivity(null);
     };
 
+    const handleNavItemClick = (label: string) => {
+        setClicked(prev => ({ ...prev, [label]: true }));
+    };
+
     return (
-        <div className="d-flex justify-content-center align-items-center min-vh-100" >
+        <div className="d-flex justify-content-center align-items-center min-vh-100" style={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
+
             <div style={{ aspectRatio: "9 / 16", maxHeight: "100vh",  width: "auto"}} >
                 <div style={{
                     display:"grid",
@@ -61,7 +79,19 @@ const App: React.FC = () => {
                     columnGap:"0px",
                     rowGap:"0px",
                     width:"100%",
-                    height:"95%"}}>
+                    height:"100%"}}>
+                    {
+                        <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"0"}}>
+                            <NextCard activity={next} />
+                        </div>
+                    }
+
+                    {
+                        <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"1100"}}>
+                            <Navbar onNavItemClick={handleNavItemClick} />
+                        </div>
+                    }
+
                     { current && (
                         <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"1000"}}>
                             <ActivityCard
@@ -76,13 +106,18 @@ const App: React.FC = () => {
 
                     )}
                     {view === 'detail' && selectedActivity && (
-                        <div style={{gridArea: " 1 / 1 / 17 / 10",zIndex:"1001" }}>
+                        <div style={{gridArea: " 1 / 1 / 17 / 10",zIndex:"1020" }}>
                             <DetailView activity={selectedActivity} onBack={backToSwiper}  />
                         </div>
                     )}
+                    {
+                        <div style={{ gridArea:"  12 / 8 / 16 / 10",zIndex:"1011"}}>
+                            <SwipeControls onLike={handleLike} onDislike={handleDislike} onBookmark={handleBookmark}  />
+                        </div>
+                    }
                 </div>
             </div>
-            <SwipeControls onLike={handleLike} onDislike={handleDislike}  />
+
 
 
         </div>
