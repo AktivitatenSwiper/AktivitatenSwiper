@@ -7,7 +7,8 @@ export interface Activity {
     max_required_time: number;
     min_participants: number;
     max_participants: number;
-    cost: "Free" | "€" | "€€" | "€€€";
+    min_cost: number;
+    max_cost: number;
     location_type: "Indoor" | "Outdoor" | "Both";
     required_equipment?: string[];
     seasonal_suitability: ("Spring" | "Summer" | "Autumn" | "Winter" | "Year-round")[];
