@@ -9,9 +9,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "test": "jest --config jest.config.cjs"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "@types/jest": "^29.5.5",
+    "jest-environment-jsdom": "^28.1.0",
     "@react-spring/web": "^10.0.3",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
