@@ -12,6 +12,6 @@ export interface Activity {
     location_type: "Indoor" | "Outdoor" | "Both";
     required_equipment?: string[];
     seasonal_suitability: ("Spring" | "Summer" | "Autumn" | "Winter" | "Year-round")[];
-    tags?: string[];
+    tags: string[];
     image: string;
 }

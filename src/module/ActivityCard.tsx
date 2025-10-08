@@ -96,7 +96,7 @@ const ActivityCard: React.FC<Props> = ({ activity, onLike, onDislike, onClick })
           </span>
                     ))}
                 </p>
-                <p className="card-text">{activity.price}</p>
+                <p className="card-text">ca. {activity.min_cost} - {activity.max_cost} €</p>
             </div>
 
             <a

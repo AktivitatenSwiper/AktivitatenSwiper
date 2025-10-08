@@ -33,7 +33,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Spring", "Summer", "Autumn"],
     "tags": ["Fitness", "Natur", "Frische Luft"],
-    "image": "wald_wandern.jpg"
+    "image": "https://cdn.pixabay.com/photo/2016/11/19/13/12/adventure-1839220_960_720.jpg"
   },
   {
     "id": 3,
@@ -50,7 +50,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Ofen"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Kreativ", "Kochen", "Lecker"],
-    "image": "pizza.jpg"
+    "image": "https://cdn.pixabay.com/photo/2017/08/06/06/43/pizza-2589575_960_720.jpg"
   },
   {
     "id": 4,
@@ -67,7 +67,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Yogamatte"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Meditation", "Achtsamkeit", "Dehnung"],
-    "image": "yoga.jpg"
+    "image": "https://cdn.pixabay.com/photo/2017/07/31/11/40/people-2557539_960_720.jpg"
   },
   {
     "id": 5,
@@ -84,7 +84,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Spring", "Summer", "Autumn"],
     "tags": ["Sehenswürdigkeiten", "Lernen", "Spaziergang"],
-    "image": "stadtfuehrung.jpg"
+    "image": "https://www.schwarzenberg.de/de/datei/anzeigen/id/13765,36/stadtfuehrer_schwarzenberg_2_foto_dirk_rueckschloss-pixore.jpg"
   },
   {
     "id": 6,
@@ -101,7 +101,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Spiele"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Freunde", "Wettkampf", "Unterhaltsam"],
-    "image": "brettspiele.jpg"
+    "image": "https://cdn.pixabay.com/photo/2018/01/29/18/04/play-3116751_960_720.jpg"
   },
   {
     "id": 7,
@@ -118,7 +118,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Sportschuhe"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Herausforderung", "Kraft", "Action"],
-    "image": "kletterhalle.jpg"
+    "image": "https://cdn.pixabay.com/photo/2020/08/11/17/43/woman-5480696_960_720.jpg"
   },
   {
     "id": 8,
@@ -135,7 +135,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Zutaten", "Cocktail-Shaker"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Party", "Genuss", "Erwachsene"],
-    "image": "cocktails.jpg"
+    "image": "https://cdn.pixabay.com/photo/2022/06/23/09/43/drinks-7279423_960_720.jpg"
   },
   {
     "id": 9,
@@ -152,7 +152,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Lernen", "Inspiration", "Ruhe"],
-    "image": "museum.jpg"
+    "image": "https://cdn.pixabay.com/photo/2020/05/21/12/17/british-museum-5200528_960_720.jpg"
   },
   {
     "id": 10,
@@ -169,7 +169,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Fahrrad"],
     "seasonal_suitability": ["Spring", "Summer"],
     "tags": ["Ausdauer", "Geschwindigkeit", "Landschaft"],
-    "image": "radtour.jpg"
+    "image": "https://www.urlaubstracker.de/wp-content/uploads/2018/09/fahrradfahrer-1000x669.jpg"
   },
   {
     "id": 11,
@@ -186,7 +186,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Logik", "Teamwork", "Adrenalin"],
-    "image": "escape_room.jpg"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT44BHlSPSIFxVgPJ-fpdlUfOxT4VtcVJnZ_A&s"
   },
   {
     "id": 12,
@@ -203,7 +203,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Decke", "Essen"],
     "seasonal_suitability": ["Summer"],
     "tags": ["Entspannend", "Sonne", "Gesellig"],
-    "image": "picknick.jpg"
+    "image": "https://ich-liebe-kaese.de/fileadmin/_processed_/4/b/csm_ich-liebe-kaese-picknick-themenwelt_a92f352c80.jpg"
   },
   {
     "id": 13,
@@ -220,7 +220,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Buch"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Ruhe", "Kaffee", "Bildung"],
-    "image": "lesen.jpg"
+    "image": "https://cdn.pixabay.com/photo/2022/01/15/15/40/old-man-6939927_960_720.jpg"
   },
   {
     "id": 14,
@@ -237,7 +237,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Winter"],
     "tags": ["Kalt", "Bewegung", "Spaß"],
-    "image": "eislaufen.jpg"
+    "image": "https://cdn.pixabay.com/photo/2024/12/30/22/56/skating-9301220_960_720.jpg"
   },
   {
     "id": 15,
@@ -254,7 +254,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Garten", "Balkon"],
     "seasonal_suitability": ["Spring", "Summer"],
     "tags": ["Kreativ", "Draussen", "Beruhigend"],
-    "image": "gaertnern.jpg"
+    "image": "https://www.callwey.de/wp-content/uploads/2019/06/Wissen-wos-herkommt.jpg"
   },
   {
     "id": 16,
@@ -271,7 +271,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Spring", "Summer", "Autumn"],
     "tags": ["Lesen", "Schnäppchen", "Entdeckung"],
-    "image": "buecherflohmarkt.jpg"
+    "image": "https://die-haendler-detmold.de/wp-content/uploads/2025/06/wg-dt-flohmarkt-1.jpg"
   },
   {
     "id": 17,
@@ -288,7 +288,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Kreativ", "Handwerk", "Lernen"],
-    "image": "diy_workshop.jpg"
+    "image": "https://workshopsf.org/wp-content/uploads/THE-SPACE-S-1200x800-04-2.jpg"
   },
   {
     "id": 18,
@@ -305,7 +305,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Summer"],
     "tags": ["Ruhe", "Nacht", "Romantisch"],
-    "image": "sternenbeobachtung.jpg"
+    "image": "https://cdn.pixabay.com/photo/2019/08/19/11/58/milky-way-4416189_960_720.jpg"
   },
   {
     "id": 19,
@@ -322,7 +322,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Lernen", "Kulinarisch", "Gruppe"],
-    "image": "kochkurs.jpg"
+    "image": "https://www.schloss-spangenberg.eu/media/231bd673-283d-41ea-a5ab-dafb0334060a/EXsx4w/Kochkurs/IMG_4097.JPG?mw=1400&dpi=72"
   },
   {
     "id": 20,
@@ -339,7 +339,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Badekleidung (optional)"],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Wellness", "Verwöhnen", "Ruhe"],
-    "image": "spa.jpg"
+    "image": "https://cdn.pixabay.com/photo/2016/08/11/02/23/massage-therapy-1584711_960_720.jpg"
   },
   {
     "id": 21,
@@ -356,7 +356,7 @@ export const activities: Activity[] = [
     "required_equipment": ["Kamera/Handy"],
     "seasonal_suitability": ["Spring", "Summer", "Autumn"],
     "tags": ["Kreativ", "Natur", "Erkunden"],
-    "image": "fotosafari.jpg"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUOnbtESV0kk8aJuF1fOhClXn3-X2Qkh6ytg&s"
   },
   {
     "id": 22,
@@ -373,7 +373,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Musik", "Party", "Energie"],
-    "image": "konzert.jpg"
+    "image": "https://cdn.pixabay.com/photo/2018/05/10/11/34/concert-3387324_960_720.jpg"
   },
   {
     "id": 23,
@@ -390,7 +390,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Freunde", "Wettkampf", "Spaß"],
-    "image": "bowling.jpg"
+    "image": "https://cdn.pixabay.com/photo/2016/11/18/21/35/blur-1836980_960_720.jpg"
   },
   {
     "id": 24,
@@ -407,7 +407,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Spring", "Summer", "Autumn"],
     "tags": ["Familie", "Tiere", "Spaziergang"],
-    "image": "zoo.jpg"
+    "image": "https://cdn.pixabay.com/photo/2017/12/26/15/36/baboon-3040740_960_720.jpg"
   },
   {
     "id": 25,
@@ -424,7 +424,7 @@ export const activities: Activity[] = [
     "required_equipment": [],
     "seasonal_suitability": ["Year-round"],
     "tags": ["Achtsamkeit", "Ruhe", "Stressabbau"],
-    "image": "meditation.jpg"
+    "image": "https://cdn.pixabay.com/photo/2016/11/22/23/29/meditate-1851165_960_720.jpg"
   },
   {
     "id": 999,
