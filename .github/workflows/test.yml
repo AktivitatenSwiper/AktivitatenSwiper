@@ -1,0 +1,71 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ unit_test ]
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests and save result
+        id: test
+        run: |
+          set +e
+          npx jest --json --outputFile=test-results.json
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+          set -e
+
+      - name: Generate test badge with counts
+        run: |
+          mkdir -p badge
+          if [ -f test-results.json ]; then
+            PASSED=$(jq '[.testResults[].assertionResults[] | select(.status=="passed")] | length' test-results.json)
+            FAILED=$(jq '[.testResults[].assertionResults[] | select(.status=="failed")] | length' test-results.json)
+            TOTAL=$((PASSED + FAILED))
+          else
+            PASSED=0
+            FAILED=0
+            TOTAL=0
+          fi
+
+          if [ "$TOTAL" -eq 0 ]; then
+            COLOR="lightgrey"
+            STATUS="no tests"
+          elif [ "${{ steps.test.outputs.exit_code }}" -eq 0 ]; then
+            COLOR="brightgreen"
+            STATUS="passing"
+          elif [ "$FAILED" -lt "$TOTAL" ]; then
+            COLOR="yellow"
+            STATUS="partial"
+          else
+            COLOR="red"
+            STATUS="failing"
+          fi
+
+          LABEL="tests:${PASSED}/${TOTAL}-${STATUS}"
+          echo "Badge: $LABEL"
+          curl -s "https://img.shields.io/badge/${LABEL}-${COLOR}.svg" -o badge/test-badge.svg
+
+      - name: Deploy test badge to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./badge
+          destination_dir: badge
+          keep_files: true
