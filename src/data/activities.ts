@@ -425,5 +425,22 @@ export const activities: Activity[] = [
     "seasonal_suitability": ["Year-round"],
     "tags": ["Achtsamkeit", "Ruhe", "Stressabbau"],
     "image": "meditation.jpg"
-  }
+  },
+  {
+    "id": 999,
+    "name": "Keine weiteren Aktivitäten verfügbar",
+    "description": "",
+    "category": "Sonstige",
+    "min_required_time": 0,
+    "max_required_time": 0,
+    "min_participants": 0,
+    "max_participants": 0,
+    "min_cost": 0,
+    "max_cost": 0,
+    "location_type": "Indoor",
+    "required_equipment": [],
+    "seasonal_suitability": ["Year-round"],
+    "tags": ["Achtsamkeit", "Ruhe", "Stressabbau"],
+    "image": "https://t3.ftcdn.net/jpg/01/31/10/78/360_F_131107888_RYu7GF4BRq4u4zD4Rqws5E8907CYp606.jpg"
+  }  
 ];
