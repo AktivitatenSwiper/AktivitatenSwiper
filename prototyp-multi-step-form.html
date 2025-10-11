@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Activity Finder Quiz</title>
+</head>
+
+<body>
+	<style>
+		* {
+			box-sizing: border-box;
+			font-family: inherit;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			padding: 1rem;
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+	.card-container {
+		border-radius: 0.5rem;
+		border-width: 1px;
+		background-color: var(--card, #fff);
+		color: var(--card-foreground, #222);
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		box-shadow: 0 2px 3rem rgba(0,0,0,0.2);
+		padding: 0.5rem;
+		height: 100%;
+	}
+	@media (min-width: 768px) {
+		.card-container {
+			padding: 1.5rem;
+		}
+		.card-inner {
+			padding: 0;
+		}
+	}
+	.card-inner {
+		margin-bottom: 2rem;
+		/* padding: 1rem; */
+	}
+	.flex-between {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 1rem;
+	}
+	.w-20 {
+		width: 5rem;
+	}
+	.btn-back {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+		border-radius: 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		transition: color 0.2s;
+		outline: none;
+		height: 2.5rem;
+		margin-right: 1rem;
+		padding: 0;
+		color: var(--primary, #2563eb);
+		text-underline-offset: 4px;
+		text-decoration: underline;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+	.btn-back:hover {
+		text-decoration: underline;
+	}
+	.text-muted {
+		color: var(--muted-foreground, #6b7280);
+	}
+	.text-right {
+		text-align: right;
+	}
+	.progressbar {
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+		border-radius: 9999px;
+		background-color: var(--secondary, #f3f4f6);
+		height: 0.5rem;
+	}
+	.progressbar-inner {
+		height: 100%;
+		width: 100%;
+		flex: 1;
+		background-color: var(--primary, #2563eb);
+		transition: all 0.2s;
+		transform: translateX(-33.3333%);
+	}
+	.mt-4 {
+		margin-top: 1rem;
+	}
+	.text-center {
+		text-align: center;
+	}
+	.title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+	.subtitle {
+		font-size: 0.875rem;
+		color: var(--muted-foreground, #6b7280);
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 28rem;
+	}
+	.opacity-1 {
+		opacity: 1;
+		transform: none;
+	}
+	.flex-wrap-center {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.option-col {
+		width: 50%;
+		padding: 0.5rem;
+	}
+	@media (min-width: 768px) {
+		.option-col {
+			width: 25%;
+		}
+	}
+	.option-card {
+		border-color: red;
+		border-radius: 0.5rem;
+		border-width: 1px;
+		border: 1px solid #bbb;
+		background-color: var(--card, #fff);
+		color: var(--card-foreground, #222);
+		box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+		position: relative;
+		overflow: hidden;
+		cursor: pointer;
+		transition: box-shadow 0.2s, border-color 0.2s;
+		height: 100%;
+		line-height: 1.5;
+	}
+	.option-card h3, .option-card p {
+		margin: 0;
+	}
+	.option-card:hover {
+		box-shadow: 0 2px 8px rgba(37,99,235,0.15);
+		border-color: var(--primary, #2563eb);
+		outline: 2px solid var(--primary, #2563eb);
+	}
+	.option-card.selected {
+		outline: 2px solid var(--primary, #2563eb);
+		border-color: var(--primary, #2563eb);
+	}
+	.option-card.ring-primary {
+		outline: 2px solid var(--primary, #2563eb);
+		border-color: var(--primary, #2563eb);
+	}
+	.option-card-inner {
+		padding: 1rem;
+	}
+	.option-title {
+		font-weight: 600;
+	}
+	.option-subtitle {
+		font-size: 0.875rem;
+		color: var(--muted-foreground, #6b7280);
+	}
+	</style>
+
+	<div class="card-container"></div>
+
+
+
+<script>
+	const pages = [
+		{
+			title: "Anzahl der Personen",
+			subtitle: "Wie viele Personen sollen teilnehmen?",
+			options: [
+				{ title: "1 Person", subtitle: "Ich mache es alleine." },
+				{ title: "2 Personen", subtitle: "Wir sind zu zweit." },
+				{ title: "3 Personen", subtitle: "Wir sind zu dritt." },
+				{ title: "≥ 4 Personen", subtitle: "Eine Personengruppe." },
+			]
+		},
+		{
+			title: "Drinnen oder draußen",
+			subtitle: "Wo soll die Aktivität stattfinden?",
+			options: [
+				{ title: "Drinnen", subtitle: "Indoor-Aktivitäten" },
+				{ title: "Draußen", subtitle: "Outdoor-Aktivitäten" },
+				{ title: "Egal", subtitle: "Beides ist möglich" },
+			]
+		},
+		{
+			title: "Aktivitäts-Level",
+			subtitle: "Wie aktiv möchtest du sein?",
+			options: [
+				{ title: "Sportlich", subtitle: "Bewegung und Action" },
+				{ title: "Chillen", subtitle: "Entspannen und relaxen" },
+				{ title: "Gemütlich", subtitle: "Locker und entspannt" },
+				{ title: "Kreativ", subtitle: "Etwas gestalten oder basteln" },
+			]
+		},
+		{
+			title: "Preis",
+			subtitle: "Wie viel darf die Aktivität kosten?",
+			options: [
+				{ title: "Kostenlos", subtitle: "Keine Ausgaben" },
+				{ title: "Günstig", subtitle: "Bis 10€ pro Person" },
+				{ title: "Mittel", subtitle: "Bis 30€ pro Person" },
+				{ title: "Teuer", subtitle: "Über 30€ pro Person" },
+			]
+		},
+		{
+			title: "Dauer",
+			subtitle: "Wie lange soll die Aktivität dauern?",
+			options: [
+				{ title: "Kurz", subtitle: "Bis 1 Stunde" },
+				{ title: "Mittel", subtitle: "1-3 Stunden" },
+				{ title: "Lang", subtitle: "Mehr als 3 Stunden" },
+			]
+		},
+		{
+			title: "Alter",
+			subtitle: "Für welches Alter ist die Aktivität gedacht?",
+			options: [
+				{ title: "Kinder", subtitle: "Bis 12 Jahre" },
+				{ title: "Jugendliche", subtitle: "13-17 Jahre" },
+				{ title: "Erwachsene", subtitle: "Ab 18 Jahre" },
+				{ title: "Alle", subtitle: "Für jedes Alter geeignet" },
+			]
+		}
+	];
+
+	let currentStep = 0;
+	const answers = [];
+
+	const cardContainer = document.querySelector('.card-container');
+
+	function renderStep(step) {
+		const page = pages[step];
+		cardContainer.innerHTML = `
+			<div class="card-inner">
+				<div class="flex-between">
+					<div class="w-20">
+						<button class="btn-back" ${step === 0 ? 'style="visibility:hidden;"' : ''} id="backBtn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="lucide lucide-chevron-left h-5 w-5">
+								<path d="m15 18-6-6 6-6"></path>
+							</svg>
+							Back
+						</button>
+					</div>
+					<div class="text-muted text-sm font-medium w-20 text-right">${step + 1}/${pages.length}</div>
+				</div>
+				<div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="determinate" data-max="100"
+					class="progressbar">
+					<div data-state="determinate" data-max="100" class="progressbar-inner" style="transform: translateX(-${100 - ((step + 1) / pages.length) * 100}%);"></div>
+				</div>
+				<div class="mt-4 text-center">
+					<h1 class="title">${page.title}</h1>
+					<p class="subtitle">${page.subtitle}</p>
+				</div>
+			</div>
+			<div class="opacity-1">
+				<div>
+					<div class="flex-wrap-center">
+						${page.options.map((opt, idx) => `
+							<div class="option-col">
+								<div class="option-card${(answers[step] === idx || (answers[step] === undefined && idx === 0)) ? ' selected' : ''}" data-idx="${idx}">
+									<div class="option-card-inner">
+										<h3 class="option-title">${opt.title}</h3>
+										<p class="option-subtitle">${opt.subtitle}</p>
+									</div>
+								</div>
+							</div>
+						`).join('')}
+					</div>
+				</div>
+			</div>
+		`;
+
+		// Option click handler
+		document.querySelectorAll('.option-card').forEach(card => {
+			card.addEventListener('click', () => {
+				answers[step] = parseInt(card.getAttribute('data-idx'));
+				if (step < pages.length - 1) {
+					currentStep++;
+					renderStep(currentStep);
+				} else {
+					showResult();
+				}
+			});
+		});
+
+		// Back button handler
+		const backBtn = document.getElementById('backBtn');
+		if (backBtn) {
+			backBtn.addEventListener('click', () => {
+				if (currentStep > 0) {
+					currentStep--;
+					renderStep(currentStep);
+				}
+			});
+		}
+	}
+
+	function showResult() {
+		cardContainer.innerHTML = `
+			<div class="card-inner text-center">
+				<h1 class="title">Danke für deine Antworten!</h1>
+				<p class="subtitle">Du hast alle Schritte abgeschlossen.</p>
+				<pre>${JSON.stringify(answers.map((a, i) => pages[i].options[a].title), null, 2)}</pre>
+			</div>
+		`;
+	}
+
+	renderStep(currentStep);
+
+
+	// tab, right arrow, bottom arrow = move focus right
+	// shift tab, left arrow, top arrow = move focus left
+	// enter / spacebar = select element
+
+	document.addEventListener('keydown', function(e) {
+		const optionCards = Array.from(document.querySelectorAll('.option-card'));
+		if (!optionCards.length) return;
+
+		let selectedIdx = answers[currentStep] ?? 0;
+
+		// Move selection right
+		if (
+			(e.key === 'Tab' && !e.shiftKey) ||
+			e.key === 'ArrowRight' ||
+			e.key === 'ArrowDown'
+		) {
+			e.preventDefault();
+			selectedIdx = (selectedIdx + 1) % optionCards.length;
+			answers[currentStep] = selectedIdx;
+			renderStep(currentStep);
+			return;
+		}
+
+		// Move selection left
+		if (
+			(e.key === 'Tab' && e.shiftKey) ||
+			e.key === 'ArrowLeft' ||
+			e.key === 'ArrowUp'
+		) {
+			e.preventDefault();
+			selectedIdx = (selectedIdx - 1 + optionCards.length) % optionCards.length;
+			answers[currentStep] = selectedIdx;
+			renderStep(currentStep);
+			return;
+		}
+
+		// Select current
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			if (currentStep < pages.length - 1) {
+				currentStep++;
+				renderStep(currentStep);
+			} else {
+				showResult();
+			}
+			return;
+		}
+
+		// previous step on escape and backspace and delete
+		if (
+			e.key === 'Escape' ||
+			e.key === 'Backspace' ||
+			e.key === 'Delete'
+		) {
+			e.preventDefault();
+			if (currentStep > 0) {
+				currentStep--;
+				renderStep(currentStep);
+			}
+			return;
+		}
+	});
+
+</script>
+</body>
+
+</html>
