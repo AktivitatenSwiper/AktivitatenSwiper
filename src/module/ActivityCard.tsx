@@ -3,6 +3,19 @@ import type {Activity} from "../types/activity.ts";
 import { useSpring, animated as a } from '@react-spring/web';
 import { useGesture } from '@use-gesture/react';
 
+// for unit test
+export const handleWheelFactory = (
+    api: { start: (params: { x: number; rot: number; scale: number }) => void },
+    onLike: () => void,
+    onDislike: () => void
+) => (e: React.WheelEvent) => {
+    if (!e.shiftKey) return;
+    e.preventDefault();
+    const dir = e.deltaX > 0 ? -1 : 1;
+    api.start({ x: dir * window.innerWidth, rot: dir * 20, scale: 1 });
+    setTimeout(() => (dir === 1 ? onLike() : onDislike()), 100);
+};
+
 interface Props {
     activity: Activity;
     onLike: () => void;
@@ -52,13 +65,7 @@ const ActivityCard: React.FC<Props> = ({ activity, onLike, onDislike, onClick })
     );
 
     // Touchpad (zwei finger seidlich links rechts)
-    const handleWheel = (e: React.WheelEvent) => {
-        if (!e.shiftKey) return; // nur bei Shift+Scroll
-        e.preventDefault();
-        const dir = e.deltaX > 0 ? -1 : 1;
-        api.start({ x: dir * window.innerWidth, rot: dir * 20, scale: 1 });
-        setTimeout(() => (dir === 1 ? onLike() : onDislike()), 100);
-    };
+    const handleWheel = handleWheelFactory(api, onLike, onDislike)
 
     return (
         <a.div
