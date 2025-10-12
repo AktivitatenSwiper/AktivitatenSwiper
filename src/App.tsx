@@ -1,7 +1,7 @@
 import './App.css'
 import '@mantine/core/styles.css';
 
-import { AppShell, Burger, Container, Group, MantineProvider, Text, UnstyledButton } from '@mantine/core';
+import { AppShell, Burger, Container, Group, MantineProvider, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import NavigationLinks from './components/NavigationLinks';
 import { useState } from 'react';
