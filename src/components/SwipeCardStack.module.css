@@ -1,0 +1,22 @@
+.stack {
+	flex-grow: 1;
+	display: grid;
+	margin: 1rem auto 0;
+	width: 100%;
+	max-width: 30rem;
+	max-height: 50rem;
+	user-select: none;
+	touch-action: none;
+}
+
+.stack>div {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	justify-content: center;
+}

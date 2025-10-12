@@ -1,0 +1,33 @@
+body {
+	--mantine-color-body: #f0f1f2;
+	overflow: hidden;
+}
+
+html {
+	overflow: hidden;
+}
+
+.mantine-AppShell-header {
+	background-color: #fff !important;
+}
+
+.mantine-AppShell-main {
+	display: flex;
+	flex-direction: column;
+}
+
+
+.mantine-Drawer-inner {
+	justify-content: center !important;
+}
+.mantine-Drawer-content {
+	max-width: 30rem !important;
+	margin-inline: auto;
+	display: flex !important;
+	flex-direction: column;
+}
+.mantine-Drawer-body {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
