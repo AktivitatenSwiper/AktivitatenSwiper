@@ -4,12 +4,14 @@ import { activities } from './data/activities';
 import ActivityCard from './module/ActivityCard';
 import DetailView from './module/DetailView';
 import SwipeControls from "./module/SwipeControls.tsx";
+import {Button} from "react-bootstrap";
+import FilterTagView from "./module/FilterTagView.tsx";
 
 const App: React.FC = () => {
     const [index, setIndex] = useState(0);
     const [liked, setLiked] = useState<Activity[]>([]);
     const [disliked, setDisliked] = useState<Activity[]>([]);
-    const [view, setView] = useState<'swiper' | 'detail'>('swiper');
+    const [view, setView] = useState<'swiper' | 'detail' | 'filterTag'>('swiper');
     const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
     // Tastatur‑Pfeiltasten
@@ -46,6 +48,10 @@ const App: React.FC = () => {
         setView('detail');
     };
 
+    const openFilterTag = () => {
+        setSelectedActivity(current);
+        setView('filterTag');
+    }
     const backToSwiper = () => {
         setView('swiper');
         setSelectedActivity(null);
@@ -80,10 +86,16 @@ const App: React.FC = () => {
                             <DetailView activity={selectedActivity} onBack={backToSwiper}  />
                         </div>
                     )}
+
+                    {view === 'filterTag' && (
+                        <div style={{gridArea: " 1 / 1 / 17 / 10",zIndex:"1001" }}>
+                            <FilterTagView onBack={backToSwiper}  />
+                        </div>
+                    )}
                 </div>
             </div>
             <SwipeControls onLike={handleLike} onDislike={handleDislike}  />
-
+            <Button onClick={openFilterTag}>FilterTag</Button>
 
         </div>
     );
