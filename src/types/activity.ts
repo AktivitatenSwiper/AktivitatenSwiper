@@ -1,8 +1,17 @@
 export interface Activity {
     id: number;
     name: string;
-    tags: string[];
-    price: string;
     description: string;
-    image?: string;
+    category: "Kultur" | "Sport" | "Essen & Trinken" | "Outdoor" | "Indoor" | "Entspannung" | "Abenteuer" | "Soziales" | "Sonstige";
+    min_required_time: number;
+    max_required_time: number;
+    min_participants: number;
+    max_participants: number;
+    min_cost: number;
+    max_cost: number;
+    location_type: "Indoor" | "Outdoor" | "Both";
+    required_equipment?: string[];
+    seasonal_suitability: ("Spring" | "Summer" | "Autumn" | "Winter" | "Year-round")[];
+    tags: string[];
+    image: string;
 }

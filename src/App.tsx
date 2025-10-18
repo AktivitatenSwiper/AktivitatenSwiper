@@ -1,129 +1,61 @@
-import React, {useState, useEffect} from 'react';
-import type {Activity} from "./types/activity.ts";
-import { activities } from './data/activities';
-import ActivityCard from './module/ActivityCard';
-import DetailView from './module/DetailView';
-import SwipeControls from "./module/SwipeControls.tsx";
-import NextCard from "./module/NextCard.tsx";
-import Navbar from "./module/Navbar.tsx"
+import './App.css'
+import '@mantine/core/styles.css';
+
+import { AppShell, Burger, Container, Group, MantineProvider, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import NavigationLinks from './components/NavigationLinks';
+import { useState } from 'react';
+import SwipeCardPage from './pages/SwipeCardPage';
+import SavedItemsPage from './pages/SavedItemsPage';
+import HelpPage from './pages/HelpPage';
 
 const App: React.FC = () => {
-    const [index, setIndex] = useState(0);
-    const [liked, setLiked] = useState<Activity[]>([]);
-    const [disliked, setDisliked] = useState<Activity[]>([]);
-    const [bookmark, setBookmark] = useState<Activity[]>([]);
-    const [view, setView] = useState<'swiper' | 'detail'>('swiper');
-    const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
-    //als schnittstelle für click kommunikatio zwischen navbar und hier
-    // @ts-ignore
-    const [clicked, setClicked] = useState<{ [key: string]: boolean }>({});
+  return <MantineProvider>
+    <FullAppShell></FullAppShell>
+  </MantineProvider>;
+}
 
+function FullAppShell() {
+  const [opened, { toggle }] = useDisclosure();
+  const [page, setPage] = useState("")
 
-    // Tastatur‑Pfeiltasten
-    useEffect(() => {
-        const handler = (e: KeyboardEvent) => {
-            if (view !== 'swiper') return;          // Nur im Swiper-Modus
+  let pageContent = <SwipeCardPage />
+  if(page === "saved") pageContent = <SavedItemsPage />
+  if(page === "help") pageContent = <HelpPage />
 
-            if (e.key === 'ArrowRight') handleLike();
-            else if (e.key === 'ArrowLeft') handleDislike();
-        };
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, [view, index]);
+  return (
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
+      padding="0"
+      style={{ marginInline: "auto"}}
+    >
+      <AppShell.Header>
+        <Container h="100%">
+            <Group h="100%">
+            <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
+            <Group justify="space-between" style={{ flex: 1 }}>
+              <Text size="xl" fw="bold" ta="center">ActivitySwipe</Text>
+              <Group mx="xl" gap={0} visibleFrom="sm">
+                <NavigationLinks page={page} setPage={setPage} />
+              </Group>
 
-    const current = activities[index];
-    const next    = activities[index + 1];
+              {/* Wir machen rechts den gleichen Text (versteckt) hin, wie links, damit es in der Mitte zentriert aussieht */}
+              <Text size="xl" fw="bold" ta="center" visibleFrom="sm" aria-hidden="true" opacity={0}>ActivitySwipe</Text>
+            </Group>
+          </Group>
+        </Container>
+      </AppShell.Header>
 
-    const handleLike = () => {
-        setLiked([...liked, current]);
-        nextCard();
-    };
+      <AppShell.Navbar py="md" px={4}>
+        <NavigationLinks page={page} setPage={setPage} />
+      </AppShell.Navbar>
 
-    const handleDislike = () => {
-        setDisliked([...disliked, current]);
-        nextCard();
-    };
-
-    const handleBookmark = () => {
-        setBookmark([...bookmark, current]);
-        //soll die nächte karte kommen wenn man bookmarkt?
-        //nextCard();
-    };
-
-    const nextCard = () => {
-        if (index + 2 < activities.length) setIndex(index + 1);
-        else alert('Alle Karten wurden durchgeswiped!');
-    };
-
-    const openDetail = () => {
-        setSelectedActivity(current);
-        setView('detail');
-    };
-
-    const backToSwiper = () => {
-        setView('swiper');
-        setSelectedActivity(null);
-    };
-
-    const handleNavItemClick = (label: string) => {
-        setClicked(prev => ({ ...prev, [label]: true }));
-    };
-
-    return (
-        <div className="d-flex justify-content-center align-items-center min-vh-100" style={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
-
-            <div style={{ aspectRatio: "9 / 16", maxHeight: "100vh",  width: "auto"}} >
-                <div style={{
-                    display:"grid",
-                    gridTemplateColumns: "repeat(9, 1fr)",
-                    gridTemplateRows:"repeat(16, 1fr)",
-                    columnGap:"0px",
-                    rowGap:"0px",
-                    width:"100%",
-                    height:"100%"
-                }}>
-                    {
-                        <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"0"}}>
-                            <NextCard activity={next} />
-                        </div>
-                    }
-
-                    {
-                        <div style={{gridArea: " 1 / 1 / 1 / 10" ,zIndex:"1100"}}>
-                            <Navbar onNavItemClick={handleNavItemClick} />
-                        </div>
-                    }
-
-                    { current && (
-                        <div style={{gridArea: " 1 / 1 / 17 / 10" ,zIndex:"1000"}}>
-                            <ActivityCard
-                                activity={current}
-                                onLike={handleLike}
-                                onDislike={handleDislike}
-                                onClick={openDetail}
-
-                            />
-                        </div>
-
-
-                    )}
-                    {view === 'detail' && selectedActivity && (
-                        <div style={{gridArea: " 1 / 1 / 17 / 10",zIndex:"1020" }}>
-                            <DetailView activity={selectedActivity} onBack={backToSwiper}  />
-                        </div>
-                    )}
-                    {
-                        <div style={{ gridArea:"  12 / 8 / 16 / 10",zIndex:"1011"}}>
-                            <SwipeControls onLike={handleLike} onDislike={handleDislike} onBookmark={handleBookmark}  />
-                        </div>
-                    }
-                </div>
-            </div>
-
-
-
-        </div>
-    );
+      <AppShell.Main>
+        {pageContent}
+      </AppShell.Main>
+    </AppShell>
+  );
 };
 
 export default App;
