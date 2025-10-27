@@ -61,6 +61,7 @@ const virtualBoxCount = 2
 export default function SwipeCardStack() {
 	const [lastBox, setLastBox] = useState<HTMLDivElement | null>(null)
 	const [remaining, setRemaining] = useState(activities)
+	const [filteredActivities, setFilteredActivities] = useState<Activity[] | null>(null);
 	const [boxCount, boxCountHandlers] = useCounter(virtualBoxCount, { min: 0 });
 	const [recentlyPressed, setRecentlyPressed] = useState(null);
 	const {start: startRecentlyPressedTimeout, clear: clearRecentlyPressedTimeout} = useTimeout(() => setRecentlyPressed(null), 500, { autoInvoke: false });
@@ -118,6 +119,19 @@ export default function SwipeCardStack() {
 		if(cardContainer.current !== null) setLastBox(cardContainer.current.lastElementChild as any);
 	}, [cardContainer]);
 
+	useEffect(() => {
+		if (!filterOpened && filteredActivities) {
+			// Reset the card stack with new filtered activities
+			setRemaining(filteredActivities);
+			setFilteredActivities(null);
+			// Reset the card references
+			if (cardContainer.current) {
+				setTimeout(() => {
+					setLastBox(cardContainer.current.lastElementChild as any);
+				}, 0);
+			}
+		}
+	}, [filterOpened, filteredActivities]);
 	// console.log("showing ", remaining.slice(remaining.length - boxCount).map((activity) => activity.id))
 
 	useHotkeys([
@@ -140,7 +154,15 @@ export default function SwipeCardStack() {
 				data={(currentCardIndex < 0) ? null : remaining[currentCardIndex]}
 				opened={infoOpened}
 				onClose={closeInfoDrawer} />
-			<SearchFilterDrawer opened={filterOpened} onClose={closeFilterDrawer} />
+			<SearchFilterDrawer
+				opened={filterOpened}
+				onClose={closeFilterDrawer}
+				onApplyFilteredActivities={(filtered) => {
+					console.log("Filtered activities:", filtered);
+					setFilteredActivities(filtered);
+					closeFilterDrawer();
+				}}
+			/>
 		</div>
 	);
 }

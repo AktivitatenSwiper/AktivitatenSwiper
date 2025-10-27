@@ -11,11 +11,13 @@ import {
 	Card,
 } from "@mantine/core";
 import { activities } from "../data/activities";
+import type {Activity} from "../types/activity.ts";
 import SearchTagFilterDrawer from "./SearchTagFilterDrawer";
 
 export default function SearchFilterDrawer(props: {
 	opened: boolean;
 	onClose: () => void;
+	onApplyFilteredActivities?: (filtered: Activity[]) => void;
 }) {
 	// Collect unique tags
 	const tags: string[] = [];
@@ -55,8 +57,10 @@ export default function SearchFilterDrawer(props: {
 	const [maxCost, setMaxCost] = useState<number | null>(null);
 
 	// Tags
-	let includeTags:string[] = [];
-	let excludeTags:string[] = [];
+	const [tagFilters, setTagFilters] = useState<{ include: string[]; exclude: string[] }>({
+		include: [],
+		exclude: [],
+	});
 
 	// View state
 	const [view, setView] = useState<"filter" | "filterTag">("filter");
@@ -169,13 +173,44 @@ export default function SearchFilterDrawer(props: {
 				</Card>
 			)}
 
+			<Button
+				fullWidth
+				color="blue"
+				mt="md"
+				onClick={() => {
+					let filtered = activities;
+
+					// ✅ Apply tag filters
+					if (tagFilters.include.length > 0) {
+						filtered = filtered.filter((a) =>
+							a.tags.some((tag) =>
+								tagFilters.include.some((inc) => inc.toLowerCase() === tag.toLowerCase())
+							)
+						);
+					}
+
+					if (tagFilters.exclude.length > 0) {
+						filtered = filtered.filter(
+							(a) =>
+								!a.tags.some((tag) =>
+									tagFilters.exclude.some((exc) => exc.toLowerCase() === tag.toLowerCase())
+								)
+						);
+					}
+
+					// TODO: add cost/participants filtering here later
+
+					props.onApplyFilteredActivities?.(filtered);
+				}}
+			>
+				Filter anwenden
+			</Button>
 			{view === "filterTag" && (
 				<div style={{ zIndex: 1001 }}>
 					<SearchTagFilterDrawer
 						onBack={backFilter}
 						onApply={(filters) => {
-							includeTags = filters.include;
-							excludeTags = filters.exclude;
+							setTagFilters(filters);
 							backFilter();
 						}}
 					/>
