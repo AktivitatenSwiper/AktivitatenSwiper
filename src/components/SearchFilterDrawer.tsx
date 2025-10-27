@@ -1,72 +1,133 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Drawer,
 	Text,
-	Button,
-	Group,
 	Stack,
-	Divider,
+	Group,
 	Select,
 	NumberInput,
-	Card,
+	Button,
 } from "@mantine/core";
 import { activities } from "../data/activities";
-import type {Activity} from "../types/activity.ts";
 import SearchTagFilterDrawer from "./SearchTagFilterDrawer";
+import type { Activity } from "../types/activity";
 
-export default function SearchFilterDrawer(props: {
+interface Props {
 	opened: boolean;
 	onClose: () => void;
 	onApplyFilteredActivities?: (filtered: Activity[]) => void;
-}) {
-	// Collect unique tags
-	const tags: string[] = [];
-	activities.forEach((activity) => {
-		activity.tags.forEach((tag) => {
-			if (!tags.some((e) => e.toLowerCase() === tag.toLowerCase())) {
-				tags.push(tag);
-			}
-		});
+}
+
+const categories = [
+	"Any",
+	"Kultur",
+	"Sport",
+	"Essen & Trinken",
+	"Outdoor",
+	"Indoor",
+	"Entspannung",
+	"Abenteuer",
+	"Soziales",
+	"Sonstige",
+];
+
+const locationTypes = ["Any", "Indoor", "Outdoor", "Both"];
+
+export default function SearchFilterDrawer(props: Props) {
+	const [view, setView] = useState<"filter" | "tag">("filter");
+
+	// --- All filter state in one object ---
+	const [filters, setFilters] = useState({
+		category: "Any",
+		locationType: "Any",
+		minReqTime: null as number | null,
+		maxReqTime: null as number | null,
+		minParticipants: null as number | null,
+		maxParticipants: null as number | null,
+		minCost: null as number | null,
+		maxCost: null as number | null,
+		includeTags: [] as string[],
+		excludeTags: [] as string[],
 	});
 
-	const categories = [
-		"Any",
-		"Kultur",
-		"Sport",
-		"Essen & Trinken",
-		"Outdoor",
-		"Indoor",
-		"Entspannung",
-		"Abenteuer",
-		"Soziales",
-		"Sonstige",
-	];
+	// --- Handle "Apply" button ---
+	const handleApply = () => {
+		let filtered = activities;
 
-	const locationTypes = ["Any", "Indoor", "Outdoor", "Both"];
+		// --- TAGS ---
+		if (filters.includeTags.length > 0) {
+			filtered = filtered.filter((a) =>
+				a.tags.some((tag) =>
+					filters.includeTags.some(
+						(inc) => tag.toLowerCase() === inc.toLowerCase()
+					)
+				)
+			);
+		}
+		if (filters.excludeTags.length > 0) {
+			filtered = filtered.filter(
+				(a) =>
+					!a.tags.some((tag) =>
+						filters.excludeTags.some(
+							(exc) => tag.toLowerCase() === exc.toLowerCase()
+						)
+					)
+			);
+		}
 
-	// Filter states
-	const [category, setCategory] = useState<string | null>("Any");
-	const [locationType, setLocationType] = useState<string | null>("Any");
+		// --- CATEGORY ---
+		if (filters.category && filters.category !== "Any") {
+			filtered = filtered.filter((a) => a.category === filters.category);
+		}
 
-	// Number filters
-	const [minReqTime, setMinReqTime] = useState<number | null>(null);
-	const [maxReqTime, setMaxReqTime] = useState<number | null>(null);
-	const [minParticipants, setMinParticipants] = useState<number | null>(null);
-	const [maxParticipants, setMaxParticipants] = useState<number | null>(null);
-	const [minCost, setMinCost] = useState<number | null>(null);
-	const [maxCost, setMaxCost] = useState<number | null>(null);
+		// --- LOCATION TYPE ---
+		if (filters.locationType && filters.locationType !== "Any") {
+			filtered = filtered.filter((a) => {
+				return a.location_type === filters.locationType;
+			});
+		}
 
-	// Tags
-	const [tagFilters, setTagFilters] = useState<{ include: string[]; exclude: string[] }>({
-		include: [],
-		exclude: [],
-	});
+		// --- REQUIRED TIME ---
+		if (filters.minReqTime !== null) {
+			filtered = filtered.filter((a) => a.min_required_time >= filters.minReqTime!);
+		}
+		if (filters.maxReqTime !== null) {
+			filtered = filtered.filter((a) => a.max_required_time <= filters.maxReqTime!);
+		}
 
-	// View state
-	const [view, setView] = useState<"filter" | "filterTag">("filter");
+		// --- PARTICIPANTS ---
+		if (filters.minParticipants !== null) {
+			filtered = filtered.filter(
+				(a) => a.min_participants >= filters.minParticipants!
+			);
+		}
+		if (filters.maxParticipants !== null) {
+			filtered = filtered.filter(
+				(a) => a.max_participants <= filters.maxParticipants!
+			);
+		}
 
-	const backFilter = () => setView("filter");
-	const openFilterTag = () => setView("filterTag");
+		// --- COST ---
+		if (filters.minCost !== null) {
+			filtered = filtered.filter((a) => a.min_cost >= filters.minCost!);
+		}
+		if (filters.maxCost !== null) {
+			filtered = filtered.filter((a) => a.max_cost <= filters.maxCost!);
+		}
+
+		// Send filtered activities back
+		props.onApplyFilteredActivities?.(filtered);
+	};
+
+	// --- Handlers to switch views ---
+	const openTagFilter = () => setView("tag");
+	const backToFilter = () => setView("filter");
+
+	useEffect(() => {
+		if (props.opened) {
+			setView("filter"); // reset to main filter view on open
+		}
+	}, [props.opened]);
 
 	return (
 		<Drawer
@@ -76,145 +137,123 @@ export default function SearchFilterDrawer(props: {
 			onClose={props.onClose}
 			title={<Text fw="bold" size="xl">Such-Filter anpassen</Text>}
 			position="bottom"
-			size="lg"
+			size="60%"
 		>
 			{view === "filter" && (
-				<Card shadow="sm" radius="md" withBorder>
-					<Stack gap="md">
-						{/* Category and Location */}
-						<Group grow>
-							<Select
-								label="Kategorie"
-								data={categories}
-								searchable
-								clearable
-								value={category}
-								onChange={setCategory}
-								placeholder="Wähle oder tippe..."
-							/>
-							<Select
-								label="Ortstyp"
-								data={locationTypes}
-								searchable
-								clearable
-								value={locationType}
-								onChange={setLocationType}
-								placeholder="Wähle oder tippe..."
-							/>
-						</Group>
+				<Stack spacing="md">
+					{/* --- Category & Location --- */}
+					<Group grow>
+						<Select
+							label="Kategorie"
+							placeholder="Kategorie auswählen"
+							data={categories}
+							value={filters.category}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, category: val || "Any" }))
+							}
+							searchable
+							clearable
+						/>
+						<Select
+							label="Location Typ"
+							placeholder="Location auswählen"
+							data={locationTypes}
+							value={filters.locationType}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, locationType: val || "Any" }))
+							}
+						/>
+					</Group>
 
-						<Divider label="Filter-Details" />
+					{/* --- Required Time --- */}
+					<Group grow>
+						<NumberInput
+							label="Min Zeit"
+							placeholder="Min"
+							value={filters.minReqTime}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, minReqTime: val ?? null }))
+							}
+						/>
+						<NumberInput
+							label="Max Zeit"
+							placeholder="Max"
+							value={filters.maxReqTime}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, maxReqTime: val ?? null }))
+							}
+						/>
+					</Group>
 
-						{/* Time filters */}
-						<Group grow>
-							<NumberInput
-								label="Min. benötigte Zeit (Minuten)"
-								placeholder="Minimum"
-								value={minReqTime}
-								onChange={setMinReqTime}
-								min={0}
-							/>
-							<NumberInput
-								label="Max. benötigte Zeit (Minuten)"
-								placeholder="Maximum"
-								value={maxReqTime}
-								onChange={setMaxReqTime}
-								min={0}
-							/>
-						</Group>
+					{/* --- Participants --- */}
+					<Group grow>
+						<NumberInput
+							label="Min Teilnehmer"
+							placeholder="Min"
+							value={filters.minParticipants}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, minParticipants: val ?? null }))
+							}
+						/>
+						<NumberInput
+							label="Max Teilnehmer"
+							placeholder="Max"
+							value={filters.maxParticipants}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, maxParticipants: val ?? null }))
+							}
+						/>
+					</Group>
 
-						{/* Participants filters */}
-						<Group grow>
-							<NumberInput
-								label="Min. Teilnehmer"
-								placeholder="Minimum"
-								value={minParticipants}
-								onChange={setMinParticipants}
-								min={0}
-							/>
-							<NumberInput
-								label="Max. Teilnehmer"
-								placeholder="Maximum"
-								value={maxParticipants}
-								onChange={setMaxParticipants}
-								min={0}
-							/>
-						</Group>
+					{/* --- Cost --- */}
+					<Group grow>
+						<NumberInput
+							label="Min Kosten"
+							placeholder="Min"
+							value={filters.minCost}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, minCost: val ?? null }))
+							}
+						/>
+						<NumberInput
+							label="Max Kosten"
+							placeholder="Max"
+							value={filters.maxCost}
+							onChange={(val) =>
+								setFilters((f) => ({ ...f, maxCost: val ?? null }))
+							}
+						/>
+					</Group>
 
-						{/* Cost filters */}
-						<Group grow>
-							<NumberInput
-								label="Min. Kosten (€)"
-								placeholder="Minimum"
-								value={minCost}
-								onChange={setMinCost}
-								min={0}
-							/>
-							<NumberInput
-								label="Max. Kosten (€)"
-								placeholder="Maximum"
-								value={maxCost}
-								onChange={setMaxCost}
-								min={0}
-							/>
-						</Group>
+					{/* --- Tag Filter Drawer Button --- */}
+					<Button fullWidth onClick={openTagFilter}>
+						Tags auswählen
+					</Button>
 
-						<Divider />
+					{/* --- Apply Button --- */}
+					<Button fullWidth color="blue" mt="md" onClick={handleApply}>
+						Filter anwenden
+					</Button>
 
-						<Group justify="space-between">
-							<Button variant="outline" color="gray" onClick={props.onClose}>
-								← Zurück
-							</Button>
-							<Button variant="light" onClick={openFilterTag}>
-								Tags filtern
-							</Button>
-						</Group>
-					</Stack>
-				</Card>
+					{/* --- Close Button --- */}
+					<Button fullWidth variant="outline" color="gray" onClick={props.onClose}>
+						Schließen
+					</Button>
+				</Stack>
 			)}
 
-			<Button
-				fullWidth
-				color="blue"
-				mt="md"
-				onClick={() => {
-					let filtered = activities;
-
-					// ✅ Apply tag filters
-					if (tagFilters.include.length > 0) {
-						filtered = filtered.filter((a) =>
-							a.tags.some((tag) =>
-								tagFilters.include.some((inc) => inc.toLowerCase() === tag.toLowerCase())
-							)
-						);
-					}
-
-					if (tagFilters.exclude.length > 0) {
-						filtered = filtered.filter(
-							(a) =>
-								!a.tags.some((tag) =>
-									tagFilters.exclude.some((exc) => exc.toLowerCase() === tag.toLowerCase())
-								)
-						);
-					}
-
-					// TODO: add cost/participants filtering here later
-
-					props.onApplyFilteredActivities?.(filtered);
-				}}
-			>
-				Filter anwenden
-			</Button>
-			{view === "filterTag" && (
-				<div style={{ zIndex: 1001 }}>
-					<SearchTagFilterDrawer
-						onBack={backFilter}
-						onApply={(filters) => {
-							setTagFilters(filters);
-							backFilter();
-						}}
-					/>
-				</div>
+			{view === "tag" && (
+				<SearchTagFilterDrawer
+					onBack={backToFilter}
+					onApply={(tags) => {
+						setFilters((f) => ({
+							...f,
+							includeTags: tags.include,
+							excludeTags: tags.exclude,
+						}));
+						backToFilter();
+					}}
+				/>
 			)}
 		</Drawer>
 	);
