@@ -10,7 +10,7 @@ import { handleTheWheelEvent } from "../card-handlers/trackpad-handler";
 import { useDrag, useWheel } from "@use-gesture/react";
 import ActivityDetailsDrawer from "./ActivityDetailsDrawer";
 import SearchFilterDrawer from "./SearchFilterDrawer";
-
+import type {Activity} from "../types/activity.ts";
 
 function performActionAndAnimation(
 	element: HTMLDivElement,
@@ -127,7 +127,9 @@ export default function SwipeCardStack() {
 			// Reset the card references
 			if (cardContainer.current) {
 				setTimeout(() => {
-					setLastBox(cardContainer.current.lastElementChild as any);
+					if(cardContainer != null && cardContainer.current != null) {
+						setLastBox(cardContainer.current.lastElementChild as any);
+					}
 				}, 0);
 			}
 		}
