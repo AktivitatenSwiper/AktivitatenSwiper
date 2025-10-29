@@ -25,6 +25,10 @@ function performActionAndAnimation(
 	// only "filter" and "undo" are allowed for the <ActivityCardSwipeEnd /> Element
 	if(!element.hasAttribute("data-id") && action !== "filter" && action !== "undo") return;
 
+	const cardId = element.dataset.id;
+	console.log(cardId)
+	if (!cardId) {return;}
+
 	if(action !== "like" && action !== "dislike") returnBoxToCenter(element);
 
 	setRecentlyPressed(action)
@@ -43,11 +47,13 @@ function performActionAndAnimation(
 
 	if(action === "star") {
 		// TODO
+		// Wird anscheinend schon wonaders verarbeited (nur für die konntrolls unten nicht für doppel klick)
 	}
 
 	if(action === "like") {
 		addNewBoxToStack()
 		animateOldBoxAway(element, Math.max(window.innerWidth, window.innerHeight), 0, animationEnd)
+		updateLikeLocalStorageArray(Number(cardId))
 	}
 
 	if(action === "dislike") {
@@ -55,6 +61,21 @@ function performActionAndAnimation(
 		animateOldBoxAway(element, -Math.max(window.innerWidth, window.innerHeight), 0, animationEnd)
 	}
 }
+
+function updateLikeLocalStorageArray(curCardId: number) {
+	const CardIds:(number[]) = JSON.parse(window.localStorage.getItem('like-list') || '[]');
+	let newSavedIds: number[] = []
+	if(CardIds.includes(curCardId)){
+		//newSavedIds = CardIds.filter((cur) => cur !== curCardId)
+		//like soll like bleiben sonnst sinlos
+	}else{
+		newSavedIds = [...CardIds, curCardId]
+
+	}
+	window.localStorage.setItem('like-list',"["+ newSavedIds.toString()+"]");
+
+}
+
 
 const virtualBoxCount = 2
 
@@ -132,7 +153,12 @@ export default function SwipeCardStack() {
 			<div className={classes.stack} ref={cardContainer} {...swipeGestures()}>
 				<ActivityCardSwipeEnd />
 				{remaining.slice(Math.max(remaining.length - boxCount, 0)).map((activity) => (
-					<ActivityCard key={activity.id} data={activity} onClick={doAction("info")} onDoubleClick={doAction("star")} />
+					<ActivityCard 
+						key={activity.id} 
+						data={activity} 
+						onClick={() => doAction("info")()}
+						onDoubleClick={() => doAction("star")()} 
+					/>
 				))}
 			</div>
 			<SwipeCardActionButtons highlight={recentlyPressed} activityCount={currentCardIndex + 1} doAction={doAction} currentId={(currentCardIndex < 0) ? null : remaining[currentCardIndex].id}/>
