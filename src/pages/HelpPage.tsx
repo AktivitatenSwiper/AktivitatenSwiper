@@ -128,9 +128,9 @@ export default function HelpPage() {
 				<Text size="sm" c="dimmed" mb="xs">
 					Wische die Karte nach rechts oder links, um Interesse zu zeigen oder zu überspringen:
 				</Text>
-				<Text size="sm" pl="md">- Nach rechts wischen = Interesse vorhanden</Text>
-				<Text size="sm" pl="md">- Nach links wischen = Kein Interesse</Text>
-				<Text size="sm" pl="md">- Nach oben wischen = Details anzeigen</Text>
+				<Text size="sm" pl="md"  c="dimmed">- Nach rechts wischen = Interesse vorhanden</Text>
+				<Text size="sm" pl="md"  c="dimmed">- Nach links wischen = Kein Interesse</Text>
+				<Text size="sm" pl="md"  c="dimmed">- Nach oben wischen = Details anzeigen</Text>
 				<Text size="sm" c="dimmed" mt="xs">
 					Die Buttons zeigen während des Wischens die entsprechende Aktion an.
 				</Text>
@@ -148,9 +148,9 @@ export default function HelpPage() {
 				<Text size="sm" c="dimmed" mb="xs">
 					Verwende die Pfeiltasten für schnelle Navigation:
 				</Text>
-				<Text size="sm" pl="md"> - Pfeil rechts (→) = Interesse vorhanden</Text>
-				<Text size="sm" pl="md"> - Pfeil links (←) = Kein Interesse</Text>
-				<Text size="sm" pl="md"> - Pfeil hoch (↑) = Details anzeigen</Text>
+				<Text size="sm" pl="md"  c="dimmed"> - Pfeil rechts (→) = Interesse vorhanden</Text>
+				<Text size="sm" pl="md"  c="dimmed"> - Pfeil links (←) = Kein Interesse</Text>
+				<Text size="sm" pl="md"  c="dimmed"> - Pfeil hoch (↑) = Details anzeigen</Text>
 				</div>
 			</Group>
 			</Card>
@@ -165,7 +165,7 @@ export default function HelpPage() {
 				<Text size="sm" c="dimmed" mb="xs">
 					Weitere Interaktionsmöglichkeiten mit der Aktivitätenkarte:
 				</Text>
-				<Text size="sm" pl="md">- Buttons unten = Alle Aktionen bequem per Klick ausführen</Text>
+				<Text size="sm" pl="md" c="dimmed">- Buttons unten = Alle Aktionen bequem per Klick ausführen</Text>
 				</div>
 			</Group>
 			</Card>
