@@ -19,6 +19,7 @@ const FilterTagView: React.FC<Props> = ({ onBack, onApply }) => {
             }
         });
     });
+    tags.sort()
 
     // Manage each tag’s state (neutral, include, exclude)
     const [buttonStates, setButtonStates] = useState<Record<string, ButtonState>>(
