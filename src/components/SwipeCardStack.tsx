@@ -64,8 +64,7 @@ function performActionAndAnimation(
 	}
 
 	if(action === "star") {
-		// TODO
-		// Wird anscheinend schon wonaders verarbeited (nur für die konntrolls unten nicht für doppel klick)
+		handleLocalStorageActivityList("toggle", cardId, "star-list");
 	}
 
 	if(action === "like") {
@@ -169,6 +168,7 @@ export default function SwipeCardStack() {
 
 	const swipeGestures = useDrag((event) => {
 		if(!lastBox) return;
+		if(event.delta[0] || event.delta[1]) lastClickTimestamp = null
 
 		if(event.first) {
 			lastBox.style.transition = ""
@@ -245,11 +245,11 @@ export default function SwipeCardStack() {
 			<div className={classes.stack} ref={cardContainer} {...swipeGestures()}>
 				<ActivityCardSwipeEnd />
 				{remaining.slice(Math.max(remaining.length - boxCount, 0)).map((activity: Activity) => (
-					<ActivityCard 
-						key={activity.id} 
-						data={activity} 
+					<ActivityCard
+						key={activity.id}
+						data={activity}
 						onClick={() => doAction("info")()}
-						onDoubleClick={() => doAction("star")()} 
+						onDoubleClick={() => doAction("star")()}
 						onMount={undoButtonOnMountOfNewCard}
 					/>
 				))}
