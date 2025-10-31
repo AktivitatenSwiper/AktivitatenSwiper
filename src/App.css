@@ -1,10 +1,6 @@
 body {
 	--mantine-color-body: #f0f1f2;
-	overflow: hidden;
-}
-
-html {
-	overflow: hidden;
+	overflow: hidden auto;
 }
 
 .mantine-AppShell-header {
