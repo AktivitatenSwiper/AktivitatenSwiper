@@ -1,8 +1,9 @@
 import { Card, Text, Badge, Group, BackgroundImage, Stack } from '@mantine/core';
 import { IconCoinEuro, IconUser, IconUsersGroup } from '@tabler/icons-react';
 import type { Activity } from '../types/activity.ts'
+import { useEffect } from 'react';
 
-export default function (props: { data: Activity, onClick: () => void, onDoubleClick: () => void }) {
+export default function (props: { data: Activity, onClick: () => void, onDoubleClick: () => void, onMount: () => void }) {
   const data = props.data;
   const participantsIcon = data.max_participants === 1 ? <IconUser /> : <IconUsersGroup />;
   const numberOfParticipants =
@@ -15,6 +16,7 @@ export default function (props: { data: Activity, onClick: () => void, onDoubleC
       ? data.min_cost
       : `${data.min_cost} - ${data.max_cost}`;
 
+  useEffect(props.onMount, [])
 
   return (
     <Card data-id={data.id} shadow="sm" padding="lg" radius="md" withBorder style={{ flexGrow: 1, height: "100%" }}>

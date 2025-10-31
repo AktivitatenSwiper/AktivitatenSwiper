@@ -1,12 +1,26 @@
 import type { FullGestureState } from "@use-gesture/react";
 
+export function animateBoxToCenterFromVoid(box: HTMLDivElement, animationEnd: () => void) {
+	console.log("return me", box)
+	const id = Number(box.getAttribute("data-id"));
+	const currentLikedIds: number[] = JSON.parse(window.localStorage.getItem("like-list") || '[]');
+	const xDelta = (currentLikedIds.includes(id) ? window.innerWidth : -window.innerWidth);
+	setBoxTransformBasedOnFingerPosition(box, xDelta, 0)
+	requestAnimationFrame(() => {
+		requestAnimationFrame(() => returnToCenter(box))
+	})
+	box.addEventListener('transitionend', () => {
+		animationEnd()
+	}, { once: true });
+}
+
 export function animateBoxAway(box: HTMLDivElement, destionationX: number, destinationY: number, animationEnd: () => void) {
 	setBoxTransformBasedOnFingerPosition(box, destionationX, destinationY)
 	box.style.pointerEvents = "none"
 	box.style.transition = "transform .5s ease"
 	box.addEventListener('transitionend', () => {
 		animationEnd()
-	});
+	}, { once: true });
 }
 
 export function returnToCenter(box: HTMLDivElement) {

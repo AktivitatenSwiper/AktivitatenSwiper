@@ -70,6 +70,7 @@ export default function SwipeCardActionButtons(props: { activityCount: number, d
 				aria-label="Letzte Entscheidung rückgängig machen"
 				color="gray"
 				onClick={doAction("undo")}
+				id="undo-button"
 			>
 				<IconArrowBackUp style={{ width: '70%', height: '70%' }} stroke={1.5} />
 			</ActionIcon>
