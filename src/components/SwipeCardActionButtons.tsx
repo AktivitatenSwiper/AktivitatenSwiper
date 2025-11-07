@@ -4,7 +4,7 @@ import { IconArrowBackUp, IconCheck, IconFilter, IconInfoCircle, IconStar, IconS
 
 export default function SwipeCardActionButtons(props: { activityCount: number, doAction: (action: string) => () => void, highlight: string|null, currentId: number|null}) {
 	const {activityCount, doAction, highlight} = props;
-	const [starredCardIds, setStarredCardIds] = useLocalStorage<number[]>({
+	const [starredCardIds, _setStarredCardIds] = useLocalStorage<number[]>({
 		key: 'star-list',
 		defaultValue: [],
 	});
@@ -35,13 +35,7 @@ export default function SwipeCardActionButtons(props: { activityCount: number, d
 						disabled={activityCount <= 0}
 						aria-label={isStarred ? "Favorit entfernen" : "Als Favorit hinzufügen"}
 						color="orange"
-						onClick={() => {
-							if (isStarred) {
-								setStarredCardIds(starredCardIds.filter((id: string | number) => id !== props.currentId));
-							} else if(props.currentId !== null) {
-								setStarredCardIds([...starredCardIds, props.currentId]);
-							}
-						}}
+						onClick={doAction("star")}
 					>
 						{isStarred ? (
 							<IconStarFilled style={{ width: '70%', height: '70%' }} stroke={1.5} />
@@ -70,6 +64,7 @@ export default function SwipeCardActionButtons(props: { activityCount: number, d
 				aria-label="Letzte Entscheidung rückgängig machen"
 				color="gray"
 				onClick={doAction("undo")}
+				id="undo-button"
 			>
 				<IconArrowBackUp style={{ width: '70%', height: '70%' }} stroke={1.5} />
 			</ActionIcon>

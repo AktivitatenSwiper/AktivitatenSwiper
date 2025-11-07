@@ -1,5 +1,6 @@
-import { Stack, Text, Title } from "@mantine/core";
-import { IconSun } from "@tabler/icons-react";
+import { Button, Stack, Text, Title } from "@mantine/core";
+import { IconRefresh, IconSun } from "@tabler/icons-react";
+import { activities } from "../data/activities";
 
 export default function ActivityCardSwipeEnd() {
 	return (
@@ -9,6 +10,16 @@ export default function ActivityCardSwipeEnd() {
 			<Text c="dimmed" size="lg" ta="center">
 				Du hast alle Aktivitäten zugeordnet. Prüfe deine gespeicherten Aktivitäten, um die beste Aktivität zu finden.
 			</Text>
+			<Button
+				leftSection={<IconRefresh />}
+				onClick={() => {
+					for (let i = 1; i <= activities.length; i++) {
+						setTimeout(() => document.getElementById("undo-button")?.click?.(), 1000 * i/activities.length);
+					}
+				}}
+			>
+				Von vorne beginnen
+			</Button>
 		</Stack>
 	);
 }
