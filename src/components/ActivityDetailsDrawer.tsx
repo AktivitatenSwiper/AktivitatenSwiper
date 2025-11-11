@@ -1,4 +1,4 @@
-import { IconCalendarPlus, IconClock, IconCoinEuro, IconShare, IconTags, IconTemperatureSun, IconTool, IconUser, IconUsersGroup } from '@tabler/icons-react';
+import { IconCalendarPlus, IconClock, IconCoinEuro, IconTags, IconTemperatureSun, IconTool, IconUser, IconUsersGroup, IconBrandWhatsapp} from '@tabler/icons-react';
 import type { Activity } from '../types/activity';
 import { ActionIcon, Badge, Button, Divider, Drawer, Grid, Group, Text } from '@mantine/core';
 import React from 'react';
@@ -122,18 +122,23 @@ export default function ActivityDetailsDrawer(props: { data: Activity|null, open
 			>
 				Zum Kalender hinzufügen
 			</Button>
+
 			<Button
 				fullWidth
-				color="blue"
-				leftSection={<IconShare />}
 				mt="sm"
-				variant="light"
+				color="green"
+				leftSection={<IconBrandWhatsapp />}
 				onClick={() => {
-					// Implement share functionality here
+					const message = `${data.name}\n${data.description}\n${window.location.href}`;
+					window.open(
+					`https://wa.me/?text=${encodeURIComponent(message)}`,
+					'_blank',
+					'noopener,noreferrer'
+					);
 				}}
 			>
-				Teilen
+				Über WhatsApp teilen
 			</Button>
-		</Drawer>
-	)
+    	</Drawer>
+  	);
 }
