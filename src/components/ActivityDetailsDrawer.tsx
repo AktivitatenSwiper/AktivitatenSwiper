@@ -75,7 +75,24 @@ export default function ActivityDetailsDrawer(props: { data: Activity|null, open
 					</>,
 				},
 			];
+		const formatDate = (date: Date) => date.toISOString().replace(/-|:|\.\d+/g, '').slice(0, 15);
 
+		const handleAddToCalendar = () => {
+		const start = new Date();
+		const end = new Date(start.getTime() + 60 * 60 * 1000); // +1 hour
+
+		const shareTitle = data.name;
+		const shareDescription = data.description;
+		const shareUrl = window.location.href; // optional, if you want to include current page URL
+
+		const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+			shareTitle
+		)}&details=${encodeURIComponent(shareDescription + "\n" + shareUrl)}&dates=${formatDate(
+			start
+		)}/${formatDate(end)}`;
+
+		window.open(calendarUrl, "_blank");
+		};
 
 	return (
 		<Drawer
@@ -117,7 +134,7 @@ export default function ActivityDetailsDrawer(props: { data: Activity|null, open
 				color="blue"
 				leftSection={<IconCalendarPlus />}
 				onClick={() => {
-					// Implement add to calendar functionality here
+					handleAddToCalendar()
 				}}
 			>
 				Zum Kalender hinzufügen
