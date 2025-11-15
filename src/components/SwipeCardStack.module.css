@@ -14,6 +14,10 @@
 	grid-row: 1;
 }
 
+.stack>div:not([data-id]) {
+	transform: none !important;
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
